@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>usuário</title>
+</head>
+<link rel="stylesheet" href="css/mobile.css" media= "(max-width:406px)">
+<link rel="stylesheet" href="css/cartola.css" media= "(min-width:406px)">
+<body>
+    <nav id="menu">
+        <h1>Menu</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="cartola.html">Monte seu time</a></li>
+            <li><a href="tabela.html">Tabela</a></li>
+            <li><a href="midia.html">Fotos e Vídeos</a></li>
+            <li><a href="patrocinadores.html">Mais sobre nossos apoiadores</a></li>
+            <li><a href="contatos.html">Quem somos e contatos</a></li>
+            <li><a href="comoAjudar.html">Como Ajudar</a></li>
+        <li><a onclick="localStorage.clear()"  href="login.html">sair</a></li>
+            <li id="usu"></li>
+        </ul>
+    </nav>
+    <img src="img/logo.png" alt="logo1" id="logo">
+    <div id="body">
+    <section id="perfil">
+         
+    </section>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script>
+var usuarioId = JSON.parse(localStorage.getItem('usuario')).id
+var usuario = {}
+criarPg()
+
+      function criarPg(){
+        document.querySelector('section').remove()
+        criarElemento('section', 'perfil', '', '', 'body')
+      axios.get(`http://localhost:3000/users/${usuarioId}`).then(response => {
+        usuario = response.data
+        criarPagina(usuario)
+      })
+    }
+     function criarPagina(usuario){
+        criarElemento('div', 'divperfil', '', '', 'perfil')
+        criarElemento('h1', '', `${usuario.nometime}`, '', 'divperfil')
+        criarElemento('h3', '', `${usuario.name}`, '', 'divperfil')
+        criarElemento('p', '', `Última pontuação: ${usuario.ultimapontuação}`, '', 'divperfil')
+        criarElemento('p', '', `Total: ${usuario.pontos}`, '', 'divperfil')
+        criarElemento('p', '', `Vivacoins: ${usuario.vivacoins}V$`, '', 'divperfil')
+        criarElemento('button', '', 'Editar perfil', 'editar(usuario)', 'divperfil')
+        criarElemento('a', '', `${usuario.nometime}`, 'usuario.html', 'usu')
+     }
+        function editar(usuario){
+            document.getElementById('divperfil').remove()
+            criarElemento('div', 'divperfil', '', '', 'perfil')
+            criarElemento('h1', '', 'Seu perfil', '', 'divperfil')
+            criarElemento('div', 'divnometime', '', '', 'divperfil')
+            criarElemento('p', 'nometime', `Nome do Time: ${usuario.nometime}`, '', 'divnometime')
+            criarElemento('button', 'nometime', 'Alterar nome do time', "alterar('nometime')", 'divnometime')
+            criarElemento('div', 'divnome', '', '', 'divperfil')
+            criarElemento('p', 'nome', `Nome: ${usuario.name}`, '', 'divnome')
+            criarElemento('button', 'nome', 'Alterar nome', "alterar('nome')", 'divnome')
+            criarElemento('div', 'divemail', '', '', 'divperfil')
+            criarElemento('p', 'email', `Email: ${usuario.email}`, '', 'divemail')
+            criarElemento('button', 'email', 'Alterar email', "alterar('email')", 'divemail')
+            criarElemento('div', 'divsenha', '', '', 'divperfil')
+            criarElemento('p', 'senha', `Senha`, '', 'divsenha')
+            criarElemento('button', 'senha', 'Alterar senha', "alterarSenha()", 'divsenha')
+        }
+        var nometime = "nometime"
+        var nome = "nome"
+        var email = "email"
+        var senha = "senha"
+        function alterar(tipo){
+            document.getElementById(tipo).remove()
+            document.getElementById(tipo).remove()
+            criarElemento('input', `alterar${tipo}`, `${tipo}`, 'text', `div${tipo}`)
+           criarElemento('button', `alterar${tipo}`, 'Alterar', `salvar(${tipo})`, `div${tipo}`)
+        }
+        function salvar(tipo){
+          var value = document.querySelector(`input#alterar${tipo}`).value
+            console.log(tipo, value)
+            document.getElementById(`alterar${tipo}`).remove()
+            document.getElementById(`alterar${tipo}`).remove()
+            console.log(`div${tipo}`)
+            if (tipo === nome){
+              axios.put(`http://localhost:3000/users/${usuarioId}`,{
+                name: value
+              })
+              criarPg()
+              }else{
+                if (tipo === nometime){
+                  axios.put(`http://localhost:3000/users/${usuarioId}`,{
+                nometime: value
+              })
+              criarPg()
+            }else{
+                if (tipo === email){
+                  axios.put(`http://localhost:3000/users/${usuarioId}`,{
+                  email: value
+                  })
+                  criarPg()
+                }
+              }
+          }
+        }
+
+        function alterarSenha(){
+          document.getElementById('senha').remove()
+            document.getElementById('senha').remove()
+          criarElemento('input', `alterarSenha`, `Digite sua senha atual`, 'text', `divsenha`)
+          criarElemento('button', `alterarSenha`, 'Verificar', `verificarSenha()`, `divsenha`)
+                 
+        }
+        function verificarSenha(){
+          var value = document.querySelector(`input#alterarSenha`).value
+          if (value === usuario.password){
+            document.getElementById('alterarSenha').remove()
+            document.getElementById('alterarSenha').remove()
+            criarElemento('input', `alterarSenha`, `Digite sua nova senha`, 'text', `divsenha`)
+            criarElemento('button', `alterarSenha`, 'Aterar', `alterarsenha()`, `divsenha`)
+          }else{
+            console.log(senha, usuario.password)
+            alert('Senha incorreta digite novamente ou entre em contato com a administração')
+          }
+        }
+        function alterarsenha(){
+          var value = document.querySelector(`input#alterarSenha`).value
+          axios.put(`http://localhost:3000/users/${usuarioId}`, {
+            password: value
+          })
+          document.getElementById('alterarSenha').remove()
+          document.getElementById('alterarSenha').remove()
+          criarElemento('p', 'senha', `Senha`, '', 'divsenha')
+          criarElemento('button', 'senha', 'Alterar senha', "alterarSenha()", 'divsenha')
+          criarPg()
+        }
+              
+            
+        
+
+
+
+
+
+
+
+        function criarElemento(elemento, id, txt, função, endereçoId){
+    if (elemento === 'button'){
+      let endereço = document.getElementById(endereçoId)
+      let nome = document.createElement(elemento)
+      nome.appendChild(document.createTextNode(txt))
+      nome.setAttribute('id', id)
+      nome.setAttribute('onclick', função)
+      endereço.appendChild(nome)
+    }else{
+      if (elemento === 'input'){
+        let endereço = document.getElementById(endereçoId)
+        let nome = document.createElement(elemento)
+        nome.setAttribute('placeholder', txt)
+        nome.setAttribute('id', id)
+        nome.setAttribute('type', função)
+        endereço.appendChild(nome)
+        
+      }else{
+        if (elemento === 'a'){
+          let endereço = document.getElementById(endereçoId)
+          let nome = document.createElement(elemento)
+          nome.setAttribute('href', função)
+          nome.setAttribute('id', id)
+          nome.appendChild(document.createTextNode(txt))
+          endereço.appendChild(nome)
+        }else{
+          if(elemento === 'img'){
+            let endereço = document.getElementById(endereçoId)
+            let nome = document.createElement(elemento)
+            nome.setAttribute('src', `img/${txt}`)
+            nome.setAttribute('style', função)
+            nome.setAttribute('id', id)
+            nome.appendChild(document.createTextNode(txt))
+            endereço.appendChild(nome)
+          }else{
+            let endereço = document.getElementById(endereçoId)
+            let nome = document.createElement(elemento)
+            nome.appendChild(document.createTextNode(txt))
+            nome.setAttribute('id', id)
+            nome.setAttribute('style', função)
+            endereço.appendChild(nome)
+          }
+        }
+      }
+    }
+}
+    </script>
+</body>
+</html>

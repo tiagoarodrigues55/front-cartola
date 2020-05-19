@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cadastrar-se</title>
+</head>
+<link rel="stylesheet" href="css/mobile.css" media= "(max-width:406px)">
+<link rel="stylesheet" href="css/cartola.css" media= "(min-width:406px)">
+
+
+<body>
+  <nav id="menu">
+    <h1>Menu</h1>
+    <ul>
+       
+    </ul>
+    <img src="img/logo.png" alt="logo1" id="logoLogin">
+    
+</nav>
+     <section style="position: relative; top: 150px;" class="fullpg"><form id="form">
+            
+            <h1>Cadastre-se</h1>
+            <img src="img/logo2.png" style="width: 200px; float: right; position: relative; bottom: 20px;">
+            <input type="text" placeholder="nome completo" id="nome">
+            <input type="text" placeholder="nome do time" id="nomeTime">
+            <input type="email" placeholder="email" id="email"><br>
+            <input type="password" placeholder="senha" id="senha"><br>
+            <input type="password" placeholder="confirmar senha" id="confirm"><br>
+            
+            
+        </form></section>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+        
+
+        <script>
+         
+          criarElemento('button', 'botão', 'cadastrar-se', 'cadastrar()', 'form')
+          var usu
+          var emails = []
+          var senhas = []
+          axios.get('http://localhost:3000/users').then(response => {
+             usu = response.data
+             console.log(usu)
+             for (i of usu){
+               emails.push(i.email)
+               senhas.push(i.password)
+             }
+          })
+       function cadastrar(){
+          var usuarios = usu
+          var nome = document.getElementById('nome').value
+          var nomeTime = document.getElementById('nomeTime').value
+          var email = document.getElementById('email').value
+          var senha = document.getElementById('senha').value
+          var confirm = document.getElementById('confirm').value
+          if (emails.indexOf(email)== -1){
+            if (nome.length != 0 && nomeTime.length != 0 && email.length != 0 && senha.length != 0){
+              if (senha === confirm){
+                usuarios.push({nome, nomeTime, email, senha, vivacoins})
+                emails.push(email)
+                senhas.push(senha)
+                console.log(usuarios)
+                axios.post('http://localhost:3000/users', {
+                    name: nomeTime,
+                    email: email,
+                    password: senha,
+                    nometime: nomeTime,
+                    vivacoins: 30,
+                    pontos: 0,
+                    ultimapontuação: 0
+                  })
+                var cadastros = {usuarios: usuarios, email: emails, senha: senhas}
+               
+                document.querySelector('#botão').remove()
+                criarElemento('a', '', 'Seu usuário foi cadastrado, clique aqui para navegar no site', 'index.html', 'form')
+              }else{
+                alert('A senha e a senha confirmada são diferentes')
+              }
+            }else{
+              alert('Preencha todos os campos')
+            }
+          }else{
+            alert('Esse email já está sendo utilizado')
+          }
+        }
+        function criarElemento(elemento, id, txt, função, endereçoId){
+    if (elemento === 'button'){
+      let endereço = document.getElementById(endereçoId)
+      let nome = document.createElement(elemento)
+      nome.appendChild(document.createTextNode(txt))
+      nome.setAttribute('id', id)
+      nome.setAttribute('onclick', função)
+      endereço.appendChild(nome)
+    }else{
+      if (elemento === 'input'){
+        let endereço = document.getElementById(endereçoId)
+        let nome = document.createElement(elemento)
+        nome.setAttribute('placeholder', txt)
+        nome.setAttribute('id', id)
+        nome.setAttribute('type', função)
+        endereço.appendChild(nome)
+        
+      }else{
+        if (elemento === 'a'){
+          let endereço = document.getElementById(endereçoId)
+          let nome = document.createElement(elemento)
+          nome.setAttribute('href', função)
+          nome.setAttribute('id', id)
+          nome.appendChild(document.createTextNode(txt))
+          endereço.appendChild(nome)
+        }else{
+          if(elemento === 'img'){
+            let endereço = document.getElementById(endereçoId)
+            let nome = document.createElement(elemento)
+            nome.setAttribute('src', `img/${txt}`)
+            nome.setAttribute('style', função)
+            nome.setAttribute('id', id)
+            nome.appendChild(document.createTextNode(txt))
+            endereço.appendChild(nome)
+          }else{
+            let endereço = document.getElementById(endereçoId)
+            let nome = document.createElement(elemento)
+            nome.appendChild(document.createTextNode(txt))
+            nome.setAttribute('id', id)
+            nome.setAttribute('style', função)
+            endereço.appendChild(nome)
+          }
+        }
+      }
+    }
+}
+        </script>
+</body>
+</html>

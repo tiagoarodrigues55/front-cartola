@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>addTime</title>
+</head>
+<link rel="stylesheet" href="css/mobile.css">
+<!--<link rel="stylesheet" href="css/cartola.css" media= "screen">-->
+<body>
+    <section class="fullpg">
+        <input type="text" placeholder="Nome do Time" id="time">
+        <input type="text" placeholder="Nome" id="nome">
+        <input type="text" placeholder="img" id="img">
+        <input type="number" name="preço" placeholder="preço" id="preço">
+       
+<button onclick="criarTime()">Criar jogador</button>    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script>
+
+function criarTime(){
+        axios.post('http://localhost:3000/jogadores', {
+            name: document.getElementById('nome').value,
+            img: document.getElementById('img').value,
+            media: 0,
+            preço: document.getElementById('preço').value,
+            ultimapontuação: 0,
+            valorização: 0,
+            jogos: 0,
+            time: document.getElementById('time').value,
+        })
+        alert('cadastrou')
+    
+}
+
+    </script>
+</body>
+</html>

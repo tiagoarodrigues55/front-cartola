@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>propaganda</title>
+</head>
+<link rel="stylesheet" href="css/mobile.css" media= "(max-width:406px)">
+<link rel="stylesheet" href="css/cartola.css" media= "(min-width:406px)">
+
+<body>
+    
+    <section id="prop">
+        <h1>O que você prefere? Clique na imagem</h1>
+        <div id="prop1" style="display: inline-block;"></div>
+        <div id="prop2" style="display: inline-block;"></div>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+    <script>
+var div = document.querySelector('#prop1')
+var div2 = document.querySelector('#prop2')
+
+function gerarPropaganda(nome, src, src2, txt, txt2){
+var link1 = document.createElement('a');
+
+link1.setAttribute('onclick', `contabilizar(${nome}, 0)`);
+var link2 = document.createElement('a');
+link2.setAttribute('onclick', `contabilizar(${nome}, 1)`);
+var nome0 = document.createElement('p');
+var textnome0 = document.createTextNode(txt);
+nome0.appendChild(textnome0);
+div.appendChild(nome0);
+var img0 = document.createElement('img');
+img0.src = `img/${src}`;
+img0.setAttribute('class', 'imgProp')
+link1.appendChild(img0);
+div.appendChild(link1);
+
+var nome1 = document.createElement('p');
+var textnome1 = document.createTextNode(txt2);
+nome1.appendChild(textnome1);
+div2.appendChild(nome1);
+
+var img1 = document.createElement('img');
+img1.src = `img/${src2}`;
+img1.setAttribute('class', 'imgProp')
+link2.appendChild(img1);
+div2.appendChild(link2);
+};
+var propagandas
+var Bl31 = []
+axios.get('http://localhost:3000/propagandas').then(async response => {
+    propagandas = await response.data
+    espera()
+})
+axios.get('http://localhost:3000/propagandas/5/porcentagem').then(response => {
+    for(i of response.data){
+        Bl31.push(i.dados)
+    }
+})
+var r = 0
+function espera(){
+
+var nomes = propagandas[r].nome
+var fotos1 = propagandas[r].foto1
+var fotos2 = propagandas[r].foto2
+var txt1 = propagandas[r].txt1
+var txt2 = propagandas[r].txt2
+
+gerarPropaganda(nomes, fotos1, fotos2, txt1, txt2);
+}
+function contabilizar(p, n){
+    p.push(n)
+    var p0 = 0
+    for(var i of p){
+        if (i === 0){
+            p0 += 1
+        }
+    }
+    var porP = p0/p.length*100
+    
+    axios.put(`http://localhost:3000/propagandas/${r+5}`, {porcentagem: porP})
+    axios.post(`http://localhost:3000/propagandas/${r+5}/porcentagem`, {dados: n})
+    
+    saveToStorage()
+    window.location.href = 'cartola.html'
+}
+
+function saveToStorage() {
+    localStorage.setItem('propaganda_Bl31', JSON.stringify(Bl31))
+    localStorage.setItem('list_propagandas', JSON.stringify(propagandas))
+    
+}
+
+    </script>
+</body>
+</html>

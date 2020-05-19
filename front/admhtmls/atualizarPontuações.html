@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualizar Pontuações</title>
+</head>
+<link rel="stylesheet" href="css/mobile.css" media= "(max-width:406px)">
+<link rel="stylesheet" href="css/cartola.css" media= "(min-width:406px)">
+
+
+<body>
+    <section id="pont">
+        <input type="text" placeholder="time" id="times">
+       <button onclick="criarbotão()">criar botão</button>
+        
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+    <script>
+       
+        var local = document.querySelector('section#pont')
+        var Ottomanos = JSON.parse(localStorage.getItem('object_Ottomanos')) || []
+        console.log(Ottomanos.nomes)
+
+        var time1
+        var rodada = 1
+        function criarbotão(){
+            time1 = document.querySelector('#times').value
+            var botão = document.createElement('button')
+            var text = document.createTextNode('criar página')
+            botão.appendChild(text)
+            botão.setAttribute('onclick', `criarpg(${time1})`)
+            local.appendChild(botão)
+        }
+        var escalações = []
+        axios.get(`http://localhost:3000/users/${rodada}/escalacaoR`).then(response => {
+            escalações = response.data
+        })
+        axios.get('http://localhost:3000/pontuacoesotto')
+            .then(response => função(response.data))
+            .catch(error => console.log(error))
+        var antonio_tP = []
+        var antonio_iP = []
+        var diego_gP = []
+        var otto_lP = []
+        var pedro_cP = []
+        var tiago_rP = []
+        var a = 0
+        
+        function função(objeto){
+           const pontuações = objeto
+            for(i of pontuações){
+                antonio_tP.push(i.antonio_t)
+                antonio_iP.push(i.antonio_i)
+                diego_gP.push(i.diego_g)
+                otto_lP.push(i.otto_l)
+                pedro_cP.push(i.pedro_c)
+                tiago_rP.push(i.tiago_r)
+            }
+            for (i of Ottomanos.nomes){
+                var apoio = [otto_lP, tiago_rP, antonio_iP, antonio_tP, diego_gP,  pedro_cP]
+                i.pontuação = apoio[a]
+                a++
+            }
+        }
+
+        var criarInputString = []
+        var pontuação1
+        var criarInputn = []
+        var newInputs = []
+        var buscaId = []
+        var botãoAtualizar
+        function criarpg(time) {
+            
+            for (i=0;i<time.nomes.length; i++){
+                criarInputString.push(`criarInput${i}`)
+            }
+            for (i of criarInputString){
+                var i
+                criarInputn.push(i)
+            }
+            for (var i = 0; i<time.nomes.length; i++){
+                criarInputn[i] = document.createElement('input')
+                criarInputn[i].setAttribute('placeholder', `${time.nomes[i].name}`)
+                criarInputn[i].setAttribute('id', `${i}`)
+                local.appendChild(criarInputn[i])
+            }
+            
+         
+            botãoAtualizar = document.createElement('button')
+            var text = document.createTextNode('atualizar')
+            botãoAtualizar.appendChild(text)
+            pontuação1 = time
+            botãoAtualizar.setAttribute('onclick', 'atualizar(pontuação1)')
+            botãoAtualizar.setAttribute('id', 'botão')
+            local.appendChild(botãoAtualizar)
+            
+        }
+        
+        function atualizar(time){ 
+            
+        for (var i=0;i<time.nomes.length;i++){
+            buscaId.push(Number(document.getElementById(`${i}`).value))
+            }
+            var mediaAntiga = []
+            var con = 0
+            var valorização= []
+        for (i of time.nomes){
+            var u = i.ultimapontuação
+            var p = buscaId[con]
+            var c = i.preço
+            var g = i.jogos
+            var r = g+1
+            var tot = 0
+            var med = 0
+            for(let p of i.pontuação){
+                tot += p
+            }
+            med = tot/i.pontuação.length
+                mediaAntiga.push(med)
+            
+            var a = mediaAntiga[con]     
+            var a0 = (a*g-u)/(g-1)
+            var cr = c/r
+            var pr = p/r
+            var ur = u/r
+            var val = 0.158*p + 0.004*c - 0.1588*u + 0.0064*a0 + 0.514*pr - 0.3134*cr + ur*0.2803
+            if (c + val < 0.7){    
+            val = 0.7 - c
+            }
+            i.valorização = Number(val.toFixed(2))
+            valorização.push(Number(val.toFixed(2)))
+            console.log(a, g, c, r, p, u)
+            con++
+        }
+        console.log(valorização)
+            for (var i=0; i<time.nomes.length;i++){
+                time.nomes[i].ultimapontuação = buscaId[i]
+            }
+            
+            var total = []
+            var media = []
+            var con = 0
+        for (i of time.nomes){
+            var tot = 0
+            var med = 0
+            for(let p of i.pontuação){
+                tot += p
+            }
+            tot += i.ultimapontuação
+            med = tot/i.pontuação.length+1
+                total.push(tot)
+                media.push(med)
+            
+            i.media = media[con]
+            i.total = total[con]
+            
+            con++
+        }
+        
+        saveToStorage()
+        saveDb(time)
+            botãoAtualizar.remove()
+            
+    }
+
+        function saveToStorage() {
+            localStorage.setItem('object_Ottomanos', JSON.stringify(Ottomanos))
+        }
+        function saveDb(time){
+            console.log('executou saveDB')
+            console.log(Ottomanos.nomes)
+            
+            for (let i = 0; i<time.nomes.length; i++){
+                axios.put(`http://localhost:3000/jogadores/${i+1}`, {
+                    media: time.nomes[i].media,
+                    preço: time.nomes[i].preço + time.nomes[i].valorização,
+                    ultimapontuação: time.nomes[i].ultimapontuação,
+                    valorização: time.nomes[i].valorização,
+                    jogos: time.nomes[i].pontuação.length
+                })
+                console.log(time.nomes[i])
+            }
+            if (time === Ottomanos){
+            axios.post(`http://localhost:3000/pontuacoesotto`, {
+                antonio_t: buscaId[0],
+                antonio_i: buscaId[1],
+                diego_g: buscaId[2],
+                otto_l: buscaId[3],
+                pedro_c: buscaId[4],
+                tiago_r: buscaId[5]
+            })    
+        }
+        atualizarUsuario()
+    }
+    function atualizarUsuario(){
+        console.log('executou atualizarUsuario')
+        var escalações2 = []
+        axios.get(`http://localhost:3000/users/${rodada}/escalacaoR`).then(response => {
+            escalações2 = response.data
+            resto(escalações2)
+        })
+    }
+    function resto(escalações2){
+            
+        for (i of escalações2){
+            var ultimapontuação
+            var valorização
+            var tot
+            axios.get('http://localhost:3000/jogadores').then(response => {
+                var jogador1 = response.data[i.jogador1_id-1].ultimapontuação
+                var jogador2 = response.data[i.jogador2_id-1].ultimapontuação
+                var jogador3 = response.data[i.jogador3_id-1].ultimapontuação
+                var jogador4 = response.data[i.jogador4_id-1].ultimapontuação
+                var jogador5 = response.data[i.jogador5_id-1].ultimapontuação
+                ultimapontuação = jogador1 + jogador2 + jogador3 + jogador4 + jogador5
+                console.log(ultimapontuação, jogador1, jogador2)
+                var jogador1 = response.data[i.jogador1_id-1].valorização
+                var jogador2 = response.data[i.jogador2_id-1].valorização
+                var jogador3 = response.data[i.jogador3_id-1].valorização
+                var jogador4 = response.data[i.jogador4_id-1].valorização
+                var jogador5 = response.data[i.jogador5_id-1].valorização
+                valorização = jogador1 + jogador2 + jogador3 + jogador4 + jogador5
+                console.log(valorização)
+            })
+            axios.get(`http://localhost:3000/users/${i.user_id}`).then(response => {
+            tot = response.data.pontos
+            let coins = response.data.vivacoins
+            console.log(tot, response.data)
+            resto2(tot, ultimapontuação, coins)
+            })
+        }
+        function resto2(tot, ultimapontuação, coins){
+            let pontos = tot + ultimapontuação
+            let vivacoins = coins + valorização
+            console.log(pontos, tot, ultimapontuação, vivacoins)
+            axios.put(`http://localhost:3000/users/${i.user_id}/p`,{
+                ultimapontuação,
+                pontos,
+                vivacoins
+            })
+        }
+
+    
+    }
+
+    function criarElemento(elemento, id, txt, função, endereçoId){
+    if (elemento === 'button'){
+      let endereço = document.getElementById(endereçoId)
+      let nome = document.createElement(elemento)
+      nome.appendChild(document.createTextNode(txt))
+      nome.setAttribute('id', id)
+      nome.setAttribute('onclick', função)
+      endereço.appendChild(nome)
+    }else{
+      if (elemento === 'input'){
+        let endereço = document.getElementById(endereçoId)
+        let nome = document.createElement(elemento)
+        nome.setAttribute('placeholder', txt)
+        nome.setAttribute('id', id)
+        nome.setAttribute('type', função)
+        endereço.appendChild(nome)
+        
+      }else{
+        if (elemento === 'a'){
+          let endereço = document.getElementById(endereçoId)
+          let nome = document.createElement(elemento)
+          nome.setAttribute('href', função)
+          nome.setAttribute('id', id)
+          nome.appendChild(document.createTextNode(txt))
+          endereço.appendChild(nome)
+        }else{
+          if(elemento === 'img'){
+            let endereço = document.getElementById(endereçoId)
+            let nome = document.createElement(elemento)
+            nome.setAttribute('src', `img/${txt}`)
+            nome.setAttribute('style', função)
+            nome.setAttribute('id', id)
+            nome.appendChild(document.createTextNode(txt))
+            endereço.appendChild(nome)
+          }else{
+            let endereço = document.getElementById(endereçoId)
+            let nome = document.createElement(elemento)
+            nome.appendChild(document.createTextNode(txt))
+            nome.setAttribute('id', id)
+            nome.setAttribute('style', função)
+            endereço.appendChild(nome)
+          }
+        }
+      }
+    }
+}
+    </script>
+   
+</body>
+</html>

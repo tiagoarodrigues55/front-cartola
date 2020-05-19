@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porcentagens</title>
+</head>
+<link rel="stylesheet" href="css/mobile.css" media= "(max-width:406px)">
+<link rel="stylesheet" href="css/cartola.css" media= "(min-width:406px)">
+<body>
+    
+    <nav id="menu">
+        <h1>Menu</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="propaganda.html">Monte seu time</a></li>
+            <li><a href="tabela.html">Tabela</a></li>
+            <li><a href="midia.html">Fotos e Vídeos</a></li>
+            <li><a href="patrocinadores.html">Mais sobre nossos apoiadores</a></li>
+            <li><a href="contatos.html">Quem somos e contatos</a></li>
+            <li><a href="comoAjudar.html">Como Ajudar</a></li>
+        </ul>
+    </nav>
+    <div id = "total" style="position:relative; top: 100px;">
+      
+    </div>
+     
+
+    
+    <script>
+        var porcentagem1 = JSON.parse(localStorage.getItem('list_propagandas')) || []
+        console.log(porcentagem1)
+        var body = document.querySelector('div#total')
+        
+        for(let i of porcentagem1){
+            var section = document.createElement('section')
+            section.setAttribute('class', 'porcentagem')
+            var divTitulo = document.createElement('div')
+            var nome = document.createElement('h1')
+            var imgTitulo = document.createElement('img')
+            imgTitulo.setAttribute('src', i.fotoempresa)
+            
+            divTitulo.appendChild(imgTitulo)
+            nomeTxt = document.createTextNode(i.nome)
+            nome.appendChild(nomeTxt)
+            divTitulo.appendChild(nome)
+            section.appendChild(divTitulo)
+            var divMãe = document.createElement('div')
+            var div = document.createElement('div')
+            var p = document.createElement('p')
+            p.setAttribute('style', 'font-size: 50px;')
+            var txtPrincipal = document.createTextNode(`${i.porcentagem}%`)
+            p.appendChild(txtPrincipal)
+            div.appendChild(p)
+            var p2 = document.createElement('p')
+            var txtSecundario = document.createTextNode(`Escolheram ${i.txt1}`)
+            p2.appendChild(txtSecundario)
+            div.appendChild(p2)
+            divMãe.appendChild(div)
+
+            
+            var div2 = document.createElement('div')
+           
+            var p3 = document.createElement('p')
+            p3.setAttribute('style', 'font-size: 50px;')
+            var txtPrincipal2 = document.createTextNode(`${100-i.porcentagem}%`)
+            p3.appendChild(txtPrincipal2)
+            div2.appendChild(p3)
+            var p4 = document.createElement('p')
+            var txtSecundario2 = document.createTextNode(`Escolheram ${i.txt2}`)
+            p4.appendChild(txtSecundario2)
+            div2.appendChild(p4)
+            divMãe.appendChild(div2)
+            section.appendChild(divMãe)
+            body.appendChild(section)
+        }
+    </script>
+</body>
+</html>

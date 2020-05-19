@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fechar Time</title>
+</head>
+<link rel="stylesheet" href="css/mobile.css" media= "(max-width:406px)">
+<link rel="stylesheet" href="css/cartola.css" media= "(min-width:406px)">
+
+<body>
+    <section id="section", class="fullpg">
+        <div id="titulo">
+            
+        </div>
+        <div id="timeFinal">
+           
+        </div>
+        <div id="botoes2">
+        
+        </div>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+   
+
+    <script>
+        criarElemento('div', 'botoes', '', '', 'botoes2')
+        criarElemento('p', 'inicial', 'Se esse é realmente seu time final? Clique em finalizar!, caso contrário clique em "voltar"', '', 'titulo')
+        criarElemento('button', 'fin', 'finalizar', 'finalizar()', 'botoes')
+        criarElemento('br', '', '', '', 'botoes')
+        criarElemento('br', '', '', '', 'botoes')
+        criarElemento('a', 'voltar', 'voltar', 'cartola.html', 'botoes')
+        var local = document.getElementById('timeFinal')
+        local.appendChild(document.createElement('ul'))
+        var usuarios = JSON.parse(localStorage.getItem('list_usuarios'))
+        var user_id = JSON.parse(localStorage.getItem('id_usuario'))
+        var times = JSON.parse(localStorage.getItem('list_times')) || []
+        var time = JSON.parse(localStorage.getItem('list_id'))
+        var todos = JSON.parse(localStorage.getItem('list_nomesjog'))
+        var rodada = 1 // automatizar a mudança de rodada
+                
+        const escalação = {jogador1: '', jogador2: '', jogador3: '', jogador4: '', jogador5: ''}
+        carregarLista()
+        escalação.jogador1 = todos[0]
+        escalação.jogador2 = todos[1]
+        escalação.jogador3 = todos[2]
+        escalação.jogador4 = todos[3]
+        escalação.jogador5 = todos[4]
+        axios.post(`http://localhost:3000/users/${user_id}/escalacao`, {
+            jogador1_id: time[0],
+            jogador2_id: time[1],
+            jogador3_id: time[2],
+            jogador4_id: time[3],
+            jogador5_id: time[4],
+            rodada: rodada
+        })
+        
+        function finalizar(){
+            
+            times.push(escalação)
+            alert(times)
+            localStorage.setItem('list_times', JSON.stringify(times))
+            local.remove()
+            document.querySelector('#botoes2').remove()
+            document.querySelector('#titulo').remove()
+            criarElemento('a', '', 'Seu time ta escalado! clique aqui para voltar a tela inicial', 'index.html', 'section')
+        }
+        
+    function carregarLista(){
+        var listaTime = document.querySelector('ul')
+           for (i of todos){
+            var todoElement2 = document.createElement('li')
+            var todoText2 = document.createTextNode(i)
+            todoElement2.appendChild(todoText2)
+            listaTime.appendChild(todoElement2)
+
+        }
+    }
+    function criarElemento(elemento, id, txt, função, endereçoId){
+    if (elemento === 'button'){
+      let endereço = document.getElementById(endereçoId)
+      let nome = document.createElement(elemento)
+      nome.appendChild(document.createTextNode(txt))
+      nome.setAttribute('id', id)
+      nome.setAttribute('onclick', função)
+      endereço.appendChild(nome)
+    }else{
+      if (elemento === 'input'){
+        let endereço = document.getElementById(endereçoId)
+        let nome = document.createElement(elemento)
+        nome.setAttribute('placeholder', txt)
+        nome.setAttribute('id', id)
+        nome.setAttribute('type', função)
+        endereço.appendChild(nome)
+        
+      }else{
+        if (elemento === 'a'){
+          let endereço = document.getElementById(endereçoId)
+          let nome = document.createElement(elemento)
+          nome.setAttribute('href', função)
+          nome.setAttribute('id', id)
+          nome.appendChild(document.createTextNode(txt))
+          endereço.appendChild(nome)
+        }else{
+          if(elemento === 'img'){
+            let endereço = document.getElementById(endereçoId)
+            let nome = document.createElement(elemento)
+            nome.setAttribute('src', `img/${txt}`)
+            nome.setAttribute('style', função)
+            nome.setAttribute('id', id)
+            nome.appendChild(document.createTextNode(txt))
+            endereço.appendChild(nome)
+          }else{
+            let endereço = document.getElementById(endereçoId)
+            let nome = document.createElement(elemento)
+            nome.appendChild(document.createTextNode(txt))
+            nome.setAttribute('id', id)
+            nome.setAttribute('style', função)
+            endereço.appendChild(nome)
+          }
+        }
+      }
+    }
+}
+      
+    </script>
+    
+</body>
+</html>

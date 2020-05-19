@@ -1,0 +1,183 @@
+/*CSS geral*/
+body {
+    background: rgb(219, 219, 219);
+    font: normal 20pt;
+    color: black;
+    }
+header {
+    margin-top: 27%;
+    text-align: center;
+}
+section {
+    background-color: white;
+    border-radius: 5px;
+    padding: 3vh;
+    width: 28vh;
+    margin: auto;
+    box-shadow: 3px 3px 10px black;
+}
+footer {
+    text-align: center;
+    font-style: italic;
+    }
+button{
+    background-color: #3b5998;
+    color: white;
+    padding:1vh;
+    border: none;
+}
+section.fullpg{
+    width: 90%;
+}
+/*intro*/
+
+    h2#txtintro {
+        font-size: 30px;
+        font-style: normal;
+        text-align: center;
+    }
+    h1#entrada {
+        font-size: 40px;
+        font-style: italic;
+        text-align: center;
+    }
+#intro img{
+    position: relative;
+    width: 100%;
+}
+div#logoIndex{
+    margin-top: 15vh;
+    width: 100%;
+}
+
+
+
+/*Monte seu time*/
+section.alinhado{
+    display: block;
+    margin-left: 1%;
+    width: 50%;
+}
+section#res3 {
+    position: sticky;
+    bottom: 13%;
+    margin-right: 0;
+    padding: 1vh;
+    width: 30%;
+} 
+#tempoReal {
+    position: sticky;
+    bottom: 1%;
+    margin-right: 0;
+    padding: 1vh;
+    width: 30%;
+} 
+li.time{
+    position: relative;
+    margin-left: -4vh;
+}
+button.comprar {
+    background-color: rgb(17, 177, 17);
+    color: white;
+    width: 45%;
+    margin-left: 7%;
+}
+button.vender {
+    background-color: rgb(223, 9, 9);
+    color: white;
+    width: 45%;
+    margin-left: 7%;
+}
+button.ler{
+    background-color: lightblue;
+    color: black;
+    margin-left: 10vh;
+}
+
+
+
+
+/*Propaganda*/
+.imgProp{
+    width: 80%;
+}
+#prop{
+    width: 90%;
+}
+
+
+
+/*Login*/
+#logo3 {
+    margin-top: 13vh;
+}
+
+
+/*Porcentagem*/
+section.porcentagem{
+    width: 70vh;
+}
+section.porcentagem div{
+    display: inline-block;
+    margin: 1vh;
+}
+
+
+/*Tabela*/
+#sectionTabela{
+    margin-top: 35%;
+    width: 97%;
+    padding: 1%;
+    margin-left: 0;
+}
+#tabelas table {
+    width: 100%;
+    font-size: 8px;
+}
+
+
+/*Usuario*/
+section#perfil {
+    margin-top: 18vh;
+}
+
+
+    /*Menu*/
+nav#menu ul{
+    list-style: none;
+}
+nav#menu li{
+    display: inline-block;
+    background-color: #3b5998;
+    padding: 1vh;
+    margin: 0px;
+    color: white;
+    
+}
+nav#menu h1 {
+    display: none;
+}
+
+nav#menu a{
+    text-decoration: none;
+    color: white;
+    font-size: 9px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+nav#menu a:hover{
+    color: rgba(247, 242, 242, 0.774);
+}
+
+nav#menu {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    background-color: #3b5998;
+}
+img#logo {
+    width: 20%;
+    position: relative;
+    left: 80%;
+    top: 11vh;
+}

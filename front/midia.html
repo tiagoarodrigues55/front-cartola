@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midia</title>
+</head>
+<link rel="stylesheet" href="css/mobile.css" media= "(max-width:406px)">
+<link rel="stylesheet" href="css/cartola.css" media= "(min-width:406px)">
+
+<body>
+    <nav id="menu">
+        <h1>Menu</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="propaganda.html">Monte seu time</a></li>
+            <li><a href="tabela.html">Tabela</a></li>
+            <li><a href="midia.html">Fotos e Vídeos</a></li>
+            <li><a href="patrocinadores.html">Mais sobre nossos apoiadores</a></li>
+            <li><a href="contatos.html">Quem somos e contatos</a></li>
+            <li><a href="comoAjudar.html">Como Ajudar</a></li>
+            <li><a onclick="localStorage.clear()"  href="login.html">sair</a></li>
+            <li id="usu"></li>
+
+        </ul>
+        
+    </nav>
+    <img src="img/logo.png" alt="logo1" id="logo">
+<div id="corpo">
+    <header></header>
+    <section id="midia" class="fullpg">
+    </section>
+    <footer><p>by Tiago Rodrigues <br>
+        <a href="https://www.instagram.com/cartolaviva/">instagram: @cartolaviva</a>
+        
+
+    </p></footer>
+</div>
+<script src="js/bancoDados.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+<script type="module">
+    import Lib from './js/lib.mjs'
+function criarElemento(elemento, id, txt, função, endereçoId){
+    Lib.criarElemento(elemento, id, txt, função, endereçoId)
+}
+function criarPg(midias, tipo){
+    for (let i of midias){
+        criarElemento('div', 'div', '', '', 'midia')
+        criarElemento(`${tipo}`, 'mid', '', '', 'div')
+    }
+}
+</script>
+</body>
+</html>
