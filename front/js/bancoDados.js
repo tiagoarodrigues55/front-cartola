@@ -2,7 +2,7 @@ var usuario = JSON.parse(localStorage.getItem('usuario'))
 criarElemento('a', '', `${usuario.nometime}`, 'usuario.html', 'usu')
 
 
-axios.get('http://localhost:3000/jogadores')
+axios.get('https://cartola-back.herokuapp.com/jogadores')
 .then(response => função(response.data))
 .catch(error => console.log(error))
 
@@ -52,7 +52,7 @@ var NovoTime = {
 }
 var times = [Ottomanos, NovoTime]
 var confrontos = []
-axios.get('http://localhost:3000/confronto')
+axios.get('https://cartola-back.herokuapp.com/confronto')
 .then(response => {
     confrontos = response.data
     localStorage.setItem('list_confrontos', JSON.stringify(confrontos))

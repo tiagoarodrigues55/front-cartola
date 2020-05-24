@@ -34,10 +34,10 @@
             local.appendChild(botão)
         }
         var escalações = []
-        axios.get(`http://localhost:3000/users/${rodada}/escalacaoR`).then(response => {
+        axios.get(`https://cartola-back.herokuapp.com/users/${rodada}/escalacaoR`).then(response => {
             escalações = response.data
         })
-        axios.get('http://localhost:3000/pontuacoesotto')
+        axios.get('https://cartola-back.herokuapp.com/pontuacoesotto')
             .then(response => função(response.data))
             .catch(error => console.log(error))
         var antonio_tP = []
@@ -173,7 +173,7 @@
             console.log(Ottomanos.nomes)
             
             for (let i = 0; i<time.nomes.length; i++){
-                axios.put(`http://localhost:3000/jogadores/${i+1}`, {
+                axios.put(`https://cartola-back.herokuapp.com/jogadores/${i+1}`, {
                     media: time.nomes[i].media,
                     preço: time.nomes[i].preço + time.nomes[i].valorização,
                     ultimapontuação: time.nomes[i].ultimapontuação,
@@ -183,7 +183,7 @@
                 console.log(time.nomes[i])
             }
             if (time === Ottomanos){
-            axios.post(`http://localhost:3000/pontuacoesotto`, {
+            axios.post(`https://cartola-back.herokuapp.com/pontuacoesotto`, {
                 antonio_t: buscaId[0],
                 antonio_i: buscaId[1],
                 diego_g: buscaId[2],
@@ -197,7 +197,7 @@
     function atualizarUsuario(){
         console.log('executou atualizarUsuario')
         var escalações2 = []
-        axios.get(`http://localhost:3000/users/${rodada}/escalacaoR`).then(response => {
+        axios.get(`https://cartola-back.herokuapp.com/users/${rodada}/escalacaoR`).then(response => {
             escalações2 = response.data
             resto(escalações2)
         })
@@ -208,7 +208,7 @@
             var ultimapontuação
             var valorização
             var tot
-            axios.get('http://localhost:3000/jogadores').then(response => {
+            axios.get('https://cartola-back.herokuapp.com/jogadores').then(response => {
                 var jogador1 = response.data[i.jogador1_id-1].ultimapontuação
                 var jogador2 = response.data[i.jogador2_id-1].ultimapontuação
                 var jogador3 = response.data[i.jogador3_id-1].ultimapontuação
@@ -224,7 +224,7 @@
                 valorização = jogador1 + jogador2 + jogador3 + jogador4 + jogador5
                 console.log(valorização)
             })
-            axios.get(`http://localhost:3000/users/${i.user_id}`).then(response => {
+            axios.get(`https://cartola-back.herokuapp.com/users/${i.user_id}`).then(response => {
             tot = response.data.pontos
             let coins = response.data.vivacoins
             console.log(tot, response.data)
@@ -235,7 +235,7 @@
             let pontos = tot + ultimapontuação
             let vivacoins = coins + valorização
             console.log(pontos, tot, ultimapontuação, vivacoins)
-            axios.put(`http://localhost:3000/users/${i.user_id}/p`,{
+            axios.put(`https://cartola-back.herokuapp.com/users/${i.user_id}/p`,{
                 ultimapontuação,
                 pontos,
                 vivacoins

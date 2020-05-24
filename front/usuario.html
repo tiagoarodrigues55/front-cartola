@@ -37,7 +37,7 @@ criarPg()
       function criarPg(){
         document.querySelector('section').remove()
         criarElemento('section', 'perfil', '', '', 'body')
-      axios.get(`http://localhost:3000/users/${usuarioId}`).then(response => {
+      axios.get(`https://cartola-back.herokuapp.com/users/${usuarioId}`).then(response => {
         usuario = response.data
         criarPagina(usuario)
       })
@@ -86,19 +86,19 @@ criarPg()
             document.getElementById(`alterar${tipo}`).remove()
             console.log(`div${tipo}`)
             if (tipo === nome){
-              axios.put(`http://localhost:3000/users/${usuarioId}`,{
+              axios.put(`https://cartola-back.herokuapp.com/users/${usuarioId}`,{
                 name: value
               })
               criarPg()
               }else{
                 if (tipo === nometime){
-                  axios.put(`http://localhost:3000/users/${usuarioId}`,{
+                  axios.put(`https://cartola-back.herokuapp.com/users/${usuarioId}`,{
                 nometime: value
               })
               criarPg()
             }else{
                 if (tipo === email){
-                  axios.put(`http://localhost:3000/users/${usuarioId}`,{
+                  axios.put(`https://cartola-back.herokuapp.com/users/${usuarioId}`,{
                   email: value
                   })
                   criarPg()

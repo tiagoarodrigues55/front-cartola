@@ -46,7 +46,7 @@
         escalação.jogador3 = todos[2]
         escalação.jogador4 = todos[3]
         escalação.jogador5 = todos[4]
-        axios.post(`http://localhost:3000/users/${user_id}/escalacao`, {
+        axios.post(`https://cartola-back.herokuapp.com/users/${user_id}/escalacao`, {
             jogador1_id: time[0],
             jogador2_id: time[1],
             jogador3_id: time[2],

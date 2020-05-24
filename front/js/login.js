@@ -7,7 +7,7 @@ var usu = []
 var emails = []
 var senhas = []
 var usuarios = []
-axios.get('http://localhost:3000/users').then(response => {
+axios.get('https://cartola-back.herokuapp.com/users').then(response => {
   usu = response.data
   console.log(usu)
   for (let i of usu){

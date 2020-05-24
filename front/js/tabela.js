@@ -8,11 +8,11 @@ import Lib from './lib.mjs'
         var rodada = 1  //MUDAR ISSO!!!!!!
         var usu = []
         window.banco = function banco(){
-        axios.get('http://localhost:3000/users').then(response => {
+        axios.get('https://cartola-back.herokuapp.com/users').then(response => {
         usu = response.data
-        axios.get(`http://localhost:3000/users/${rodada}/escalacaoR`).then(response => {
+        axios.get(`https://cartola-back.herokuapp.com/users/${rodada}/escalacaoR`).then(response => {
         var escalados = response.data
-        axios.get('http://localhost:3000/jogadores').then(response => {
+        axios.get('https://cartola-back.herokuapp.com/jogadores').then(response => {
         jogadores = response.data
         Lib.tabelaRodada(jogadores, escalados, usu)
         })
@@ -20,13 +20,13 @@ import Lib from './lib.mjs'
         })
     }
     window.bancoGeral = function bancoGeral(){
-            axios.get('http://localhost:3000/users').then(response => {
+            axios.get('https://cartola-back.herokuapp.com/users').then(response => {
             usu = response.data
             Lib.tabelaGeral(usu)
             })
     }
     window.bancoJogadores = function bancoJogadores() {
-        axios.get('http://localhost:3000/jogadores').then(response => {
+        axios.get('https://cartola-back.herokuapp.com/jogadores').then(response => {
             jogadores = response.data
             Lib.tabelaJogadores(jogadores)
             })
