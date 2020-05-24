@@ -54,7 +54,7 @@ axios.get('https://cartola-back.herokuapp.com/propagandas').then(async response 
     propagandas = await response.data
     espera()
 })
-axios.get('https://cartola-back.herokuapp.com/propagandas/5/porcentagem').then(response => {
+axios.get('https://cartola-back.herokuapp.com/propagandas/1/porcentagem').then(response => {
     for(i of response.data){
         Bl31.push(i.dados)
     }
@@ -79,7 +79,7 @@ function contabilizar(p, n){
         }
     }
     var porP = p0/p.length*100
-    console.log(r, porP, n)
+  
     axios.put(`https://cartola-back.herokuapp.com/propagandas/${r+1}`, {porcentagem: porP})
     
     axios.post(`https://cartola-back.herokuapp.com/propagandas/${r+1}/porcentagem`, {dados: n})
