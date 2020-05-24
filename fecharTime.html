@@ -41,25 +41,43 @@
                 
         const escalação = {jogador1: '', jogador2: '', jogador3: '', jogador4: '', jogador5: ''}
         carregarLista()
-        escalação.jogador1 = todos[0]
-        escalação.jogador2 = todos[1]
-        escalação.jogador3 = todos[2]
-        escalação.jogador4 = todos[3]
-        escalação.jogador5 = todos[4]
-        axios.post(`https://cartola-back.herokuapp.com/users/${user_id}/escalacao`, {
-            jogador1_id: time[0],
-            jogador2_id: time[1],
-            jogador3_id: time[2],
-            jogador4_id: time[3],
-            jogador5_id: time[4],
-            rodada: rodada
-        })
+        
         
         function finalizar(){
-            
+          var userids = []
+          axios.get(`https://cartola-back.herokuapp.com/users/${rodada}/escalacaoR`).then(response=>{
+            for(i of response.data){
+              userids.push(i.user_id)
+            }
+              if(userids.indexOf(user_id)!= -1){
+                axios.put(`https://cartola-back.herokuapp.com/users/${user_id}/${rodada}/escalacao`, {
+                jogador1_id: time[0],
+                jogador2_id: time[1],
+                jogador3_id: time[2],
+                jogador4_id: time[3],
+                jogador5_id: time[4]
+              }).then(console.log('update'))
+            }else{
+                axios.post(`https://cartola-back.herokuapp.com/users/${user_id}/escalacao`, {
+                jogador1_id: time[0],
+                jogador2_id: time[1],
+                jogador3_id: time[2],
+                jogador4_id: time[3],
+                jogador5_id: time[4],
+                rodada: rodada
+                }).then(console.log('create'))
+                }
+              
+            })
+        
+          escalação.jogador1 = todos[0]
+          escalação.jogador2 = todos[1]
+          escalação.jogador3 = todos[2]
+          escalação.jogador4 = todos[3]
+          escalação.jogador5 = todos[4]
             times.push(escalação)
             alert(times)
-            localStorage.setItem('list_times', JSON.stringify(times))
+           // localStorage.setItem('list_times', JSON.stringify(times))
             local.remove()
             document.querySelector('#botoes2').remove()
             document.querySelector('#titulo').remove()
