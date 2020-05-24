@@ -59,7 +59,7 @@ axios.get('https://cartola-back.herokuapp.com/propagandas/5/porcentagem').then(r
         Bl31.push(i.dados)
     }
 })
-var r = 1
+var r = 0
 function espera(){
 
 var nomes = propagandas[r].nome
@@ -80,8 +80,8 @@ function contabilizar(p, n){
     }
     var porP = p0/p.length*100
     
-    axios.put(`https://cartola-back.herokuapp.com/propagandas/${r}`, {porcentagem: porP})
-    axios.post(`https://cartola-back.herokuapp.com/propagandas/${r}/porcentagem`, {dados: n})
+    axios.put(`https://cartola-back.herokuapp.com/propagandas/${r+1}`, {porcentagem: porP})
+    axios.post(`https://cartola-back.herokuapp.com/propagandas/${r+1}/porcentagem`, {dados: n})
     
     saveToStorage()
     window.location.href = 'cartola.html'
