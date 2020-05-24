@@ -40,7 +40,9 @@ var img = [];
 var jogadores = [];
 var preço = [];
 var id = [];
+console.log(rodada)
 escolherConfronto(rodada)
+
 
 
 criarElemento('p', '', `Qual vai ser o elenco do ${usuario.nometime}? Você tem ${usuario.vivacoins}V$`, '', 'informações do usuário')
@@ -75,7 +77,8 @@ function escolherConfronto(rodada) {
 
   var nomeDoTime1 = time1[rodada-1]
   var nomeDoTime2 = time2[rodada-1]
-
+  console.log(nomeDoTime1)
+  console.log(nomeDoTime2)
   a = nomeDoTime1.img;
   a = nomeDoTime2.img.map(function (item) {
     return a.push(item);

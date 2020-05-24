@@ -61,17 +61,14 @@ function login(){
                     document.getElementById('link').remove()
                     criarElemento('h2','', `Bem vindo ${usuarios[i].name}`, '', 'form')
                     criarElemento('a', '', 'Clique aqui para ir a tela inicial!', 'index.html', 'form')
-                    axios.get('http://localhost:3000/users').then(response =>{
+                    axios.get('https://cartola-back.herokuapp.com/users').then(response =>{
                       var users = response.data
                       for (let a of users){
                         if (a.email === email){
-                          
-                          var user = a.id
-                          localStorage.setItem('id_usuario', JSON.stringify(user))  
+                          localStorage.setItem('id_usuario', JSON.stringify(a.id))  
                           localStorage.setItem('usuario', JSON.stringify(a))  
-
-                          console.log(user)                      
-                        }
+                     
+                        }else{console.log(a)}
                       }
                     })
 
