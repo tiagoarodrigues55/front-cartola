@@ -9,24 +9,36 @@
 <link rel="stylesheet" href="css/cartola.css" media= "(min-width:406px)">
 
 <body>
-    <nav id="menu">
-        <h1>Menu</h1>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="propaganda.html">Monte seu time</a></li>
-            <li><a href="tabela.html.html">Tabela</a></li>
-            <li><a href="midia.html">Fotos e Vídeos</a></li>
-            <li><a href="patrocinadores.html">Mais sobre nossos apoiadores</a></li>
-            <li><a href="contatos.html">Quem somos e contatos</a></li>
-            <li><a href="comoAjudar.html">Como Ajudar</a></li>
-            <li><a onclick="localStorage.clear()"  href="login.html">sair</a></li>
-            <li id="usu"></li>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        </ul>
-        
+    <nav id="menu">
+        <div id="myNav" class="overlay">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div class="overlay-content">
+                <a href="index.html">Home</a>
+                <a href="propaganda.html">Seu time</a>
+                <a href="tabela.html">Tabela</a>
+                <a href="midia.html">Fotos e Vídeos</a>
+                <a href="patrocinadores.html">Apoiadores</a>
+                <a href="contatos.html">Quem somos</a>
+                <a href="comoAjudar.html">Como Ajudar</a>
+            </div>
+          </div>
+          
+            <ul>
+                <li><span onclick="openNav()">
+                    <div class="topnav">
+                      <i class="fa fa-bars"></i>
+                  </div>
+                    </span></li>
+                <li><a onclick="localStorage.clear()"  href="login.html">sair</a></li>
+                <li id="usu"></li>
+                <li id="lilogo"><img src="img/logo.png" alt="logo1" id="logo"></li>
+            </ul>
+       
     </nav>
-    <img src="img/logo.png" alt="logo1" id="logo">
-<div id="corpo">
+    <script src="js/menu.js"></script>
+
     <header>
         <div>
             <p>

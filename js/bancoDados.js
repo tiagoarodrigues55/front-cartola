@@ -8,7 +8,10 @@ axios.get('https://cartola-back.herokuapp.com/jogadores')
 
 const função = ( Apoio ) => {
     console.log(Apoio)
-    var Jogadores = Apoio
+    var Jogadores = Apoio.sort(function(a,b) {
+      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0
+      })
+console.log(Jogadores)
     var fotoOttomanos = []
 var nomesOttomanos = []
 var preçosOttomanos = []
