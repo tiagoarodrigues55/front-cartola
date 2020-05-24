@@ -80,7 +80,8 @@ function contabilizar(p, n){
     }
     var porP = p0/p.length*100
     
-    axios.put(`https://cartola-back.herokuapp.com/propagandas/${r+1}`, {porcentagem: porP}).then(()=>alert(porP))
+    axios.put(`https://cartola-back.herokuapp.com/propagandas/${r+1}`, {porcentagem: porP}).then(()=>alert(porP)).catch(()=>alert('erro'))
+    ))
     axios.post(`https://cartola-back.herokuapp.com/propagandas/${r+1}/porcentagem`, {dados: n})
     
     saveToStorage()
