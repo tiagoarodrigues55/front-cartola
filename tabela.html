@@ -14,7 +14,7 @@
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="propaganda.html">Monte seu time</a></li>
-            <li><a href="tabela.html.html">Tabela</a></li>
+            <li><a href="tabela.html">Tabela</a></li>
             <li><a href="midia.html">Fotos e Vídeos</a></li>
             <li><a href="patrocinadores.html">Mais sobre nossos apoiadores</a></li>
             <li><a href="contatos.html">Quem somos e contatos</a></li>
@@ -28,9 +28,7 @@
     <section id="sectionTabela">
         <div id="tabelas">
             <div id="div" >
-               <button onclick="banco()">Tabela Rodada</button>
-               <button onclick="bancoGeral()">Tabela Geral</button>
-               <button onclick="bancoJogadores()">Tabela Jogadores</button>
+              
             </div>
         <table>
             <caption>
@@ -38,11 +36,170 @@
         </table>
     </div>
     </section>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-
-    <script type="module" src="js/tabela.js">
-  
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>  
     <script src="js/bancoDados.js"></script>
+    
+    <script>
+        var rodada = 1
+        var usu = []
+        axios.get('https://cartola-back.herokuapp.com/users').then(response => {
+        usu = response.data
+        console.log(usu)
+        })
+        var escalados = []
+        axios.get(`https://cartola-back.herokuapp.com/users/${rodada}/escalacaoR`).then(response => {
+        escalados = response.data
+        })
+        var jogadores = []
+        axios.get('https://cartola-back.herokuapp.com/jogadores').then(response => {
+        jogadores = response.data
+        tabelaRodada(jogadores)
+        })
+        criarElemento('div', 'div', '', '', 'sectionTabela')
+        criarElemento('br', '', '', '', 'div')
+        criarElemento('button', '', 'tabela geral', 'tabelaGeral()', 'div')
+        criarElemento('br', '', '', '', 'div')
+        criarElemento('button', '', 'tabela da rodada', 'tabelaRodada(jogadores)', 'div')
+        criarElemento('br', '', '', '', 'div')
+        criarElemento('button', '', 'tabela dos jogadores', 'tabelaJogadores()', 'div')
+
+    function tabelaJogadores(){
+        document.querySelector('table').remove()
+        document.querySelector('#tabelas').appendChild(document.createElement('table'))
+        var tabela3 = []
+        var jog = jogadores.sort(function(a,b) {
+        return a.ultimapontuação > b.ultimapontuação ? -1 : a.ultimapontuação < b.ultimapontuação ? 1 : 0
+        })
+        for (i of jog){
+            tabela3.push({
+                nome: i.name,
+                'ultima pontuação': i.ultimapontuação,
+                preço: i.preço,
+                valorização: i.valorização,
+                media: i.media.toFixed(2),
+            })
+        }
+        tabelas(tabela3)
+    }
+    function tabelaGeral(){
+        document.querySelector('table').remove()
+        document.querySelector('#tabelas').appendChild(document.createElement('table'))
+        var tabela2 = []
+        var usuarios = usu.sort(function(a,b) {
+        return a.pontos > b.pontos ? -1 : a.pontos < b.pontos ? 1 : 0
+        })
+        var contador = 1
+        for (i of usuarios){
+            tabela2.push({
+                colocação: contador,
+                'nome do time': i.nometime,
+                pontuação: i.pontos,
+                vivacoins: `${i.vivacoins}V$`
+            })
+            contador++
+        }
+        tabelas(tabela2)
+    }
+    function tabelaRodada(jogadores){
+        console.log(jogadores)
+        document.querySelector('table').remove()
+        document.querySelector('#tabelas').appendChild(document.createElement('table'))
+        var tabela = []
+        for (i of escalados){
+            for (a of usu){
+                if (i.user_id === a.id){
+                    var soma = a.ultimapontuação
+                    var nome = a.nometime
+                }
+            }
+            tabela.push({
+                'nome do time': nome,
+                jogador1: jogadores[i.jogador1_id-1].name,
+                jogador2: jogadores[i.jogador2_id-1].name,
+                jogador3: jogadores[i.jogador3_id-1].name,
+                jogador4: jogadores[i.jogador4_id-1].name,
+                jogador5: jogadores[i.jogador5_id-1].name,
+                pontuação: soma
+            })
+        }
+        tabelas(tabela)
+    }
+        var timesEscalados = [jogadores]
+        var trs = []
+        var tds = []
+        var soma = []
+        function generateTableHead(table, data) {
+            let thead = table.createTHead();
+            let row = thead.insertRow();
+            for (let key of data) {
+                let th = document.createElement("th");
+                let text = document.createTextNode(key);
+                th.appendChild(text);
+                row.appendChild(th);
+            }
+        }
+        function generateTable(table, data) {
+            for (let element of data) {
+                let row = table.insertRow();
+                for (key in element) {
+                    let cell = row.insertCell();
+                    let text = document.createTextNode(element[key]);
+                    cell.appendChild(text);
+                }
+            }
+        }
+        function tabelas(tabela){
+        let table = document.querySelector("table");
+        let data = Object.keys(tabela[0]);
+        generateTableHead(table, data);
+        generateTable(table, tabela);
+        var caption = document.querySelector('caption')
+        }
+    function criarElemento(elemento, id, txt, função, endereçoId){
+    if (elemento === 'button'){
+      let endereço = document.getElementById(endereçoId)
+      let nome = document.createElement(elemento)
+      nome.appendChild(document.createTextNode(txt))
+      nome.setAttribute('id', id)
+      nome.setAttribute('onclick', função)
+      endereço.appendChild(nome)
+    }else{
+      if (elemento === 'input'){
+        let endereço = document.getElementById(endereçoId)
+        let nome = document.createElement(elemento)
+        nome.setAttribute('placeholder', txt)
+        nome.setAttribute('id', id)
+        nome.setAttribute('type', função)
+        endereço.appendChild(nome)
+
+      }else{
+        if (elemento === 'a'){
+          let endereço = document.getElementById(endereçoId)
+          let nome = document.createElement(elemento)
+          nome.setAttribute('href', função)
+          nome.setAttribute('id', id)
+          nome.appendChild(document.createTextNode(txt))
+          endereço.appendChild(nome)
+        }else{
+          if(elemento === 'img'){
+            let endereço = document.getElementById(endereçoId)
+            let nome = document.createElement(elemento)
+            nome.setAttribute('src', txt)
+            nome.setAttribute('style', função)
+            nome.setAttribute('id', id)
+            nome.appendChild(document.createTextNode(txt))
+            endereço.appendChild(nome)
+          }else{
+            let endereço = document.getElementById(endereçoId)
+            let nome = document.createElement(elemento)
+            nome.appendChild(document.createTextNode(txt))
+            nome.setAttribute('id', id)
+            endereço.appendChild(nome)
+          }
+        }
+      }
+    }
+  }
+    </script>
 </body>
 </html>
