@@ -15,12 +15,14 @@
        <button onclick="criarbotão()">criar botão</button>
         
     </section>
+    <a href="../index.html">home</a>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
     <script>
        
         var local = document.querySelector('section#pont')
         var Ottomanos = JSON.parse(localStorage.getItem('object_Ottomanos')) || []
+        var Kibeleza = JSON.parse(localStorage.getItem('object_Kibeleza')) || []
         console.log(Ottomanos.nomes)
 
         var time1
@@ -33,22 +35,15 @@
             botão.setAttribute('onclick', `criarpg(${time1})`)
             local.appendChild(botão)
         }
+        var jogadores = []
         var escalações = []
         axios.get(`https://cartola-back.herokuapp.com/users/${rodada}/escalacaoR`).then(response => {
             escalações = response.data
         })
         axios.get('https://cartola-back.herokuapp.com/jogadores')
-            .then(response => função(response.data))
+            .then(response => jogadores = response.data)
             .catch(error => console.log(error))
-        var antonio_tP = []
-        var antonio_iP = []
-        var diego_gP = []
-        var otto_lP = []
-        var pedro_cP = []
-        var tiago_rP = []
         var a = 0
-      
-
         var criarInputString = []
         var pontuação1
         var criarInputn = []
@@ -91,24 +86,21 @@
             var con = 0
             var valorização= []
         for (i of time.nomes){
-            var u = i.ultimapontuação
-            var p = buscaId[con]
+            var u = i.ultimapontuação || 0 
+            var p = buscaId[con] || 0
             var c = i.preço
-            var g = i.jogos
+            var g = i.jogos || 0
             var r = g+1
-            var tot = 0
             var med = 0
-            for(let p of i.pontuação){
-                tot += p
-            }
-            med = tot/i.pontos.length
-                mediaAntiga.push(med)
             
-            var a = mediaAntiga[con]     
-            var a0 = (a*g-u)/(g-1)
-            var cr = c/r
+            med = i.pontos/g
+                mediaAntiga.push(med)
+            i.pontos += p
+            var a = mediaAntiga[con] || 0     
+            var a0 = (a*g-u)/(g-1) || 0
+            var cr = c/r 
             var pr = p/r
-            var ur = u/r
+            var ur = u/r || 0
             var val = 0.158*p + 0.004*c - 0.1588*u + 0.0064*a0 + 0.514*pr - 0.3134*cr + ur*0.2803
             if (c + val < 0.7){    
             val = 0.7 - c
@@ -129,17 +121,13 @@
         for (i of time.nomes){
             var tot = 0
             var med = 0
-            for(let p of i.pontuação){
-                tot += p
-            }
-            tot += i.ultimapontuação
-            med = tot/i.pontuação.length+1
-                total.push(tot)
+            med = i.pontos/(i.jogos+1)
+            console.log(med, i.pontos, i.jogos)
+                total.push(i.pontos)
                 media.push(med)
             
-            i.media = media[con]
-            i.total = total[con]
-            
+            i.media = media[con] || 0
+            i.total = total[con] || 0
             con++
         }
         
@@ -151,38 +139,31 @@
 
         function saveToStorage() {
             localStorage.setItem('object_Ottomanos', JSON.stringify(Ottomanos))
+            localStorage.setItem('object_Kibeleza', JSON.stringify(Kibeleza))
+
         }
         function saveDb(time){
             console.log('executou saveDB')
-            console.log(Ottomanos.nomes)
+            console.log(Kibeleza.nomes)
             
-            for (let i = 0; i<time.nomes.length; i++){
-                axios.put(`https://cartola-back.herokuapp.com/jogadores/${i+1}`, {
-                    media: time.nomes[i].media,
-                    preço: time.nomes[i].preço + time.nomes[i].valorização,
-                    ultimapontuação: time.nomes[i].ultimapontuação,
-                    valorização: time.nomes[i].valorização,
-                    jogos: time.nomes[i].pontuação.length
-                })
-                console.log(time.nomes[i])
+            for (i of time.nomes){
+                axios.put(`https://cartola-back.herokuapp.com/jogadores/${i.id}`, {
+                    media: i.media,
+                    preço: i.preço + i.valorização,
+                    ultimapontuação: i.ultimapontuação,
+                    valorização: i.valorização,
+                    jogos: i.jogos+1,
+                    pontos: i.pontos
+                }).then(console.log('requisitou'))
+               console.log(i)
             }
-            if (time === Ottomanos){
-            axios.post(`https://cartola-back.herokuapp.com/pontuacoesotto`, {
-                antonio_t: buscaId[0],
-                antonio_i: buscaId[1],
-                diego_g: buscaId[2],
-                otto_l: buscaId[3],
-                pedro_c: buscaId[4],
-                tiago_r: buscaId[5]
-            })    
-        }
         atualizarUsuario()
     }
     function atualizarUsuario(){
         console.log('executou atualizarUsuario')
         var escalações2 = []
         axios.get(`https://cartola-back.herokuapp.com/users/${rodada}/escalacaoR`).then(response => {
-            escalações2 = response.data
+            escalações2 = response.datae
             resto(escalações2)
         })
     }
