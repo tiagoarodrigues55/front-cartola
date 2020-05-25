@@ -189,13 +189,14 @@
                 var jogador5 = response.data[i.jogador5_id-1].valorização
                 valorização = jogador1 + jogador2 + jogador3 + jogador4 + jogador5
                 console.log(valorização)
+                axios.get(`https://cartola-back.herokuapp.com/users/${i.user_id}`).then(response => {
+                tot = response.data.pontos
+                let coins = response.data.vivacoins
+                console.log(tot, response.data)
+                resto2(tot, ultimapontuação, coins)
             })
-            axios.get(`https://cartola-back.herokuapp.com/users/${i.user_id}`).then(response => {
-            tot = response.data.pontos
-            let coins = response.data.vivacoins
-            console.log(tot, response.data)
-            resto2(tot, ultimapontuação, coins)
             })
+            
         }
         function resto2(tot, ultimapontuação, coins){
             let pontos = tot + ultimapontuação
