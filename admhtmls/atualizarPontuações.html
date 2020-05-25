@@ -196,16 +196,16 @@
                 tot = response.data.pontos
                 let coins = response.data.vivacoins
                 console.log(tot, response.data)
-                resto2(tot, ultimapontuação, coins)
+                resto2(tot, ultimapontuação, coins, i.user_id)
             })
             })
             
         }
-        function resto2(tot, ultimapontuação, coins){
+        function resto2(tot, ultimapontuação, coins, user_id){
             let pontos = tot + ultimapontuação
             let vivacoins = coins + valorização
             console.log(pontos, tot, ultimapontuação, vivacoins)
-            axios.put(`https://cartola-back.herokuapp.com/users/${i.user_id}/p`,{
+            axios.put(`https://cartola-back.herokuapp.com/users/${user_id}/p`,{
                 pontos: pontos,
                 ultimapontuação: ultimapontuação,
                 vivacoins: vivacoins
