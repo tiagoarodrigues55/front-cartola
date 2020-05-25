@@ -155,7 +155,7 @@
                     jogos: i.jogos+1,
                     pontos: i.pontos
                 }).then(console.log('requisitou'))
-               console.log(i)
+               console.log(i.id)
             }
         atualizarUsuario()
     }
@@ -163,7 +163,7 @@
         console.log('executou atualizarUsuario')
         var escalações2 = []
         axios.get(`https://cartola-back.herokuapp.com/users/${rodada}/escalacaoR`).then(response => {
-            escalações2 = response.datae
+            escalações2 = response.data
             resto(escalações2)
         })
     }
