@@ -164,6 +164,7 @@
         var escalações2 = []
         axios.get(`https://cartola-back.herokuapp.com/users/${rodada}/escalacaoR`).then(response => {
             escalações2 = response.data
+            console.log(escalações2)
             resto(escalações2)
         })
     }
