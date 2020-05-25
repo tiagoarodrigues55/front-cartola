@@ -175,6 +175,9 @@
             var valorização
             var tot
             axios.get('https://cartola-back.herokuapp.com/jogadores').then(response => {
+                response.data = response.data.sort(function(a,b) {
+      return a.id < b.id ? -1 : a.id > b.id ? 1 : 0
+      })
                 var jogador1 = response.data[i.jogador1_id-1].ultimapontuação
                 var jogador2 = response.data[i.jogador2_id-1].ultimapontuação
                 var jogador3 = response.data[i.jogador3_id-1].ultimapontuação
