@@ -164,7 +164,7 @@
         var escalações2 = []
         axios.get(`https://cartola-back.herokuapp.com/users/${rodada}/escalacaoR`).then(response => {
             escalações2 = response.data
-            console.log(escalações2)
+        
             resto(escalações2)
         })
     }
@@ -202,10 +202,10 @@
             let vivacoins = coins + valorização
             console.log(pontos, tot, ultimapontuação, vivacoins)
             axios.put(`https://cartola-back.herokuapp.com/users/${i.user_id}/p`,{
-                ultimapontuação,
-                pontos,
-                vivacoins
-            })
+                pontos: pontos,
+                ultimapontuação: ultimapontuação,
+                vivacoins: vivacoins
+            }).then(console.log('atualizou as pontuações'))
         }
 
     
