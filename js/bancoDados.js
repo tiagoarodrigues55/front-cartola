@@ -16,23 +16,26 @@ console.log(Jogadores)
 var nomesOttomanos = []
 var preçosOttomanos = []
 var idOttomanos =  []
-var fotoNovoTime = []
-var nomesNovoTime = []
-var preçosNovoTime = []
-var idNovoTime =  []
-    for (let i of Apoio){
-        if (i.id <= 6){
+var fotoKibeleza = []
+var nomesKibeleza = []
+var preçosKibeleza = []
+var idKibeleza =  []
+    for (let i of Jogadores){
+        if (i.time === "Ottomanos"){
+          console.log(i.time)
             fotoOttomanos.push(i.img)
             nomesOttomanos.push(i.name)
             preçosOttomanos.push(i.preço)
             idOttomanos.push(i)
         }else{
-            if (i.id<=12){
-            fotoNovoTime.push(i.img)
-            nomesNovoTime.push(i.name)
-            preçosNovoTime.push(i.preço)
-            idNovoTime.push(i)
-        }
+            if (i.time === "Kibeleza"){
+              console.log(i.time)
+
+            fotoKibeleza.push(i.img)
+            nomesKibeleza.push(i.name)
+            preçosKibeleza.push(i.preço)
+            idKibeleza.push(i)
+        }else{console.log('erro')}
     }
     }
 var Ottomanos = {
@@ -44,16 +47,16 @@ var Ottomanos = {
     jogadores: nomesOttomanos,
     preço: preçosOttomanos
 }
-var NovoTime = {
-    nomesReais: nomesNovoTime,
-    nomes: idNovoTime.sort(function(a,b) {
+var Kibeleza = {
+    nomesReais: nomesKibeleza,
+    nomes: idKibeleza.sort(function(a,b) {
         return a.id < b.id ? -1 : a.id > b.id ? 1 : 0
         }),
-        img: fotoNovoTime,
-        jogadores: nomesNovoTime,
-        preço: preçosNovoTime
+        img: fotoKibeleza,
+        jogadores: nomesKibeleza,
+        preço: preçosKibeleza
 }
-var times = [Ottomanos, NovoTime]
+var times = [Ottomanos, Kibeleza]
 var confrontos = []
 axios.get('https://cartola-back.herokuapp.com/confronto')
 .then(response => {
@@ -67,7 +70,7 @@ axios.get('https://cartola-back.herokuapp.com/confronto')
 console.log(Ottomanos)
 localStorage.setItem('object_Jogadores', JSON.stringify(Jogadores))
 localStorage.setItem('object_Ottomanos', JSON.stringify(Ottomanos))
-localStorage.setItem('object_NovoTime', JSON.stringify(NovoTime))
+localStorage.setItem('object_Kibeleza', JSON.stringify(Kibeleza))
 localStorage.setItem('list_times', JSON.stringify(times))
 }
 

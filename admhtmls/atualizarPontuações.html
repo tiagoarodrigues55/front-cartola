@@ -37,7 +37,7 @@
         axios.get(`https://cartola-back.herokuapp.com/users/${rodada}/escalacaoR`).then(response => {
             escalações = response.data
         })
-        axios.get('https://cartola-back.herokuapp.com/pontuacoesotto')
+        axios.get('https://cartola-back.herokuapp.com/jogadores')
             .then(response => função(response.data))
             .catch(error => console.log(error))
         var antonio_tP = []
@@ -47,23 +47,7 @@
         var pedro_cP = []
         var tiago_rP = []
         var a = 0
-        
-        function função(objeto){
-           const pontuações = objeto
-            for(i of pontuações){
-                antonio_tP.push(i.antonio_t)
-                antonio_iP.push(i.antonio_i)
-                diego_gP.push(i.diego_g)
-                otto_lP.push(i.otto_l)
-                pedro_cP.push(i.pedro_c)
-                tiago_rP.push(i.tiago_r)
-            }
-            for (i of Ottomanos.nomes){
-                var apoio = [otto_lP, tiago_rP, antonio_iP, antonio_tP, diego_gP,  pedro_cP]
-                i.pontuação = apoio[a]
-                a++
-            }
-        }
+      
 
         var criarInputString = []
         var pontuação1
@@ -117,7 +101,7 @@
             for(let p of i.pontuação){
                 tot += p
             }
-            med = tot/i.pontuação.length
+            med = tot/i.pontos.length
                 mediaAntiga.push(med)
             
             var a = mediaAntiga[con]     
